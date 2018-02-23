@@ -1,6 +1,6 @@
 {
   "name": "fpcollect",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Fingerprinting script of Fingerprint-Scanner",
   "main": "dist/fpcollect.js",
   "scripts": {
