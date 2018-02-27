@@ -191,8 +191,10 @@ const fpCollect = (function () {
     },
     webDriver: () => {
       return 'webdriver' in window ||
-        'true' === document.getElementsByTagName('html')[0].getAttribute('webdriver') ||
-        'webdriver' in navigator;
+        document.getElementsByTagName('html')[0].getAttribute('webdriver') ||
+        'webdriver' in navigator || 
+        '_Selenium_IDE_Recorder' in window ||
+        '__webdriver_script_fn' in document;
     },
     errorsGenerated: () => {
       const errors = [];
