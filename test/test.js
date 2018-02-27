@@ -26,6 +26,14 @@ describe('Fingerprinting on Chrome Headless', function () {
     await browser.close();
   });
 
+  it('Battery should be true', async () => {
+    const battery = await page.evaluate(async () => {
+      const fingerprint = await fpCollect.generateFingerprint();
+      return fingerprint.battery;
+    });
+    expect(battery).to.be.true;
+  });
+
   it('debugTool should be true', async () => {
     const debugTool = await page.evaluate(async () => {
       const fingerprint = await fpCollect.generateFingerprint();

@@ -26,7 +26,8 @@ const fpCollect = (function () {
     hasChrome: false,
     permissions: true,
     iframeChrome: false,
-    debugTool: false
+    debugTool: false,
+    battery: false
   };
 
   const defaultAttributeToFunction = {
@@ -291,6 +292,9 @@ const fpCollect = (function () {
       };
       console.debug(regexp);
       return cpt > 1;
+    },
+    battery: () => {
+      return 'getBattery' in window.navigator;
     }
   };
 
