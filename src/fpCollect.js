@@ -27,7 +27,8 @@ const fpCollect = (function () {
     permissions: true,
     iframeChrome: false,
     debugTool: false,
-    battery: false
+    battery: false,
+    deviceMemory: false
   };
 
   const defaultAttributeToFunction = {
@@ -295,6 +296,9 @@ const fpCollect = (function () {
     },
     battery: () => {
       return 'getBattery' in window.navigator;
+    },
+    deviceMemory: () => {
+      return navigator.deviceMemory || 0;
     }
   };
 
