@@ -117,12 +117,20 @@ describe('Fingerprinting on Chrome Headless', function () {
     expect(nightmareJS).to.be.false;
   });
 
-  it('PhantomJS should be false', async () => {
+  it('Selenium should be an array', async () => {
+    const selenium = await page.evaluate(async () => {
+      const fingerprint = await fpCollect.generateFingerprint();
+      return fingerprint.selenium;
+    });
+    expect(selenium instanceof Array).to.be.true;
+  });
+
+  it('PhantomJS should be an array', async () => {
     const phantomJS = await page.evaluate(async () => {
       const fingerprint = await fpCollect.generateFingerprint();
       return fingerprint.phantomJS;
     });
-    expect(phantomJS).to.be.false;
+    expect(phantomJS instanceof Array).to.be.true;
   });
 
   it('screenDesc should be \'function () { [native code] }\'', async () => {
