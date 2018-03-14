@@ -344,7 +344,7 @@ const fpCollect = (function () {
       });
     },
     sequentum: () => {
-
+      return window.external && window.external.toString().indexOf('Sequentum') > -1;
     }
   };
 

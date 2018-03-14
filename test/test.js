@@ -26,7 +26,15 @@ describe('Fingerprinting on Chrome Headless', function () {
     await browser.close();
   });
 
-  it('tpCanvas should be 0', async () => {
+  it('Sequentum should be false', async () => {
+    const sequentum = await page.evaluate(async () => {
+      const fingerprint = await fpCollect.generateFingerprint();
+      return fingerprint.sequentum;
+    });
+    expect(sequentum).to.be.false;
+  });
+
+  it('tpCanvas should be (0, 0, 0, 0)', async () => {
     const tpCanvas = await page.evaluate(async () => {
       const fingerprint = await fpCollect.generateFingerprint();
       return fingerprint.tpCanvas;
