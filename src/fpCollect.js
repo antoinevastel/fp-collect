@@ -30,7 +30,8 @@ const fpCollect = (function () {
     debugTool: false,
     battery: false,
     deviceMemory: false,
-    tpCanvas: true
+    tpCanvas: true,
+    sequentum: false
   };
 
   const defaultAttributeToFunction = {
@@ -336,11 +337,13 @@ const fpCollect = (function () {
           img.onerror = () => {
             resolve(ERROR);
           };
-          img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACGFjVEwAAAABAAAAAcMq2TYAAAANSURBVAiZY2BgYPgPAAEEAQB9ssjfAAAAGmZjVEwAAAAAAAAAAQAAAAEAAAAAAAAAAAD6A+gBAbNU+2sAAAARZmRBVAAAAAEImWNgYGBgAAAABQAB6MzFdgAAAABJRU5ErkJggg==';
+          img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII=';
         } catch (e) {
           resolve(ERROR);
         }
       });
+    },
+    sequentum: () => {
 
     }
   };
