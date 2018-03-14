@@ -29,7 +29,8 @@ const fpCollect = (function () {
     iframeChrome: false,
     debugTool: false,
     battery: false,
-    deviceMemory: false
+    deviceMemory: false,
+    bCanvas: true
   };
 
   const defaultAttributeToFunction = {
@@ -321,6 +322,26 @@ const fpCollect = (function () {
     },
     deviceMemory: () => {
       return navigator.deviceMemory || 0;
+    },
+    bCanvas: () => {
+      return new Promise((resolve) => {
+        try {
+          const img = new Image();
+          const canvasCtx = document.createElement('canvas').getContext('2d');
+          img.onload = () => {
+            canvasCtx.drawImage(img, 0, 0);
+            resolve(canvasCtx.getImageData(0, 0, 1, 1).data[3]);
+          };
+
+          img.onerror = () => {
+            resolve(ERROR);
+          };
+          img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACGFjVEwAAAABAAAAAcMq2TYAAAANSURBVAiZY2BgYPgPAAEEAQB9ssjfAAAAGmZjVEwAAAAAAAAAAQAAAAEAAAAAAAAAAAD6A+gBAbNU+2sAAAARZmRBVAAAAAEImWNgYGBgAAAABQAB6MzFdgAAAABJRU5ErkJggg==';
+        } catch (e) {
+          resolve(ERROR);
+        }
+      });
+
     }
   };
 
