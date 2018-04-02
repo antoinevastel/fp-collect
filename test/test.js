@@ -26,6 +26,34 @@ describe('Fingerprinting on Chrome Headless', function () {
     await browser.close();
   });
 
+  it('videoCodecs should not be null', async () => {
+    const videoCodecs = await page.evaluate(async () => {
+      const fingerprint = await fpCollect.generateFingerprint();
+      return fingerprint.videoCodecs;
+    });
+
+    expect(videoCodecs).to.deep.equal({
+      ogg: 'probably',
+      h264: '',
+      webm: 'probably'
+    });
+  });
+
+  it('audioCodecs should not be null', async () => {
+    const audioCodecs = await page.evaluate(async () => {
+      const fingerprint = await fpCollect.generateFingerprint();
+      return fingerprint.audioCodecs;
+    });
+
+    expect(audioCodecs).to.deep.equal({
+      ogg: 'probably',
+      mp3: 'probably',
+      wav: 'probably',
+      m4a: '',
+      aac: ''
+    });
+  });
+
   it('Sequentum should be false', async () => {
     const sequentum = await page.evaluate(async () => {
       const fingerprint = await fpCollect.generateFingerprint();

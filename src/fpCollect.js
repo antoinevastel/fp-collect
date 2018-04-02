@@ -31,7 +31,9 @@ const fpCollect = (function () {
     battery: false,
     deviceMemory: false,
     tpCanvas: true,
-    sequentum: false
+    sequentum: false,
+    audioCodecs: false,
+    videoCodecs: false
   };
 
   const defaultAttributeToFunction = {
@@ -345,6 +347,42 @@ const fpCollect = (function () {
     },
     sequentum: () => {
       return window.external && window.external.toString().indexOf('Sequentum') > -1;
+    },
+    audioCodecs: () => {
+      const audioElt = document.createElement("audio");
+
+      if (audioElt.canPlayType) {
+        return {
+          ogg: audioElt.canPlayType('audio/ogg; codecs="vorbis"'),
+          mp3: audioElt.canPlayType('audio/mpeg;'),
+          wav: audioElt.canPlayType('audio/wav; codecs="1"'),
+          m4a: audioElt.canPlayType('audio/x-m4a;'),
+          aac: audioElt.canPlayType('audio/aac;'),
+        }
+      }
+      return {
+        ogg: UNKNOWN,
+        mp3: UNKNOWN,
+        wav: UNKNOWN,
+        m4a: UNKNOWN,
+        aac: UNKNOWN
+      };
+    },
+    videoCodecs: () => {
+      const videoElt = document.createElement("video");
+
+      if (videoElt.canPlayType) {
+        return {
+          ogg: videoElt.canPlayType('video/ogg; codecs="theora"'),
+          h264: videoElt.canPlayType('video/mp4; codecs="avc1.42E01E"'),
+          webm: videoElt.canPlayType('video/webm; codecs="vp8, vorbis"'),
+        }
+      }
+      return {
+        ogg: UNKNOWN,
+        h264: UNKNOWN,
+        webm: UNKNOWN,
+      }
     }
   };
 
