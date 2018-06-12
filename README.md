@@ -19,7 +19,7 @@ npm install
 and
 
 ```
-npm build
+npm run-script build
 ```
 
 It generates a minified version called **fpcollect.js** in the **dist/** directory.
