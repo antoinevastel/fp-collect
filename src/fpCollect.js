@@ -346,7 +346,7 @@ const fpCollect = (function () {
       });
     },
     sequentum: () => {
-      return window.external && window.external.toString().indexOf('Sequentum') > -1;
+      return window.external && window.external.toString && window.external.toString().indexOf('Sequentum') > -1;
     },
     audioCodecs: () => {
       const audioElt = document.createElement("audio");
