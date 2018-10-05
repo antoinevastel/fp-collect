@@ -3,7 +3,7 @@ node_js:
   - "node"
 sudo: required
 addons:
-  chrome: stable # have Travis install chrome stable.
+  chrome: stable
 cache:
   npm: true
   directories:
