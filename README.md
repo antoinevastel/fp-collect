@@ -22,7 +22,7 @@ and
 npm run-script build
 ```
 
-It generates a minified version called **fpcollect.js** in the **dist/** directory.
+It generates a minified version called **fpCollect.min.js** in the **dist/** directory.
 ### Usage
 
 ```
