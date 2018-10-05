@@ -1,28 +1,42 @@
-// webpack.config.js
-const path = require('path');
+const webpack = require('webpack');
+const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+const env = process.env.WEBPACK_ENV;
+
+
+const libraryName = 'fpCollect';
+const plugins = [];
+let outputFile;
+
+if (env === 'build') {
+    plugins.push(new UglifyJsPlugin({ minimize: true }));
+    outputFile = `${libraryName}.min.js`;
+} else {
+    outputFile = `${libraryName}.js`;
+}
 
 const config = {
-    context: path.resolve(__dirname, 'src'),
-    entry: './fpCollect.js',
+    entry: `${__dirname}/src/${libraryName}.js`,
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'fpcollect.js',
-        library: 'fpCollect'
+        path: `${__dirname}/dist`,
+        filename: outputFile,
+        library: libraryName
     },
     module: {
-        rules: [{
-            test: /\.js$/,
-            include: path.resolve(__dirname, 'src'),
-            use: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: [
-                        ['es2015', { modules: false }]
-                    ]
+        loaders: [
+            {
+                loader:'babel-loader',
+                test: /\.js$/,
+                exclude:  /node_modules/,
+                query: {
+                    presets: ['es2015']
                 }
-            }]
-        }]
-    }
+            }
+        ]
+    },
+    resolve: {
+        extensions: ['.js']
+    },
+    plugins: plugins
 };
 
 module.exports = config;
