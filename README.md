@@ -5,10 +5,6 @@
 Fingerprinting module of [Fingerprint-Scanner](https://github.com/antoinevastel/fpscanner), a library to detect 
 bots/crawlers based on their fingerprint.
 
-## Warning
-The library is still in its early phase, many changes may occur.
-
-
 ## Getting Started
 
 ### Installation
@@ -25,7 +21,7 @@ npm run-script build
 It generates a minified version called **fpCollect.min.js** in the **dist/** directory.
 ### Usage
 
-```
+```javascript
 const fingerprint = await fpCollect.generateFingerprint();
 
 //or
