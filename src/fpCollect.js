@@ -308,7 +308,11 @@ const fpCollect = (function () {
       const iframe = document.createElement('iframe');
       iframe.srcdoc = 'blank page';
       document.body.appendChild(iframe);
-      return typeof iframe.contentWindow.chrome;
+
+      const result = typeof iframe.contentWindow.chrome;
+      iframe.remove();
+
+      return result;
     },
     debugTool: () => {
       let cpt = 0;
