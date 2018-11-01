@@ -400,7 +400,6 @@ const fpCollect = (function () {
       const promises = [];
       const fingerprint = {};
       Object.keys(DEFAULT_ATTRIBUTES_ASYNC).forEach((attribute) => {
-        console.log(attribute);
         fingerprint[attribute] = {};
         if (DEFAULT_ATTRIBUTES_ASYNC[attribute]) {
           promises.push(new Promise((resolve) => {
