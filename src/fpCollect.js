@@ -12,6 +12,8 @@ const fpCollect = (function () {
         onLine: false,
         cookieEnabled: false,
         doNotTrack: false,
+        cpuClass: false,
+        hardwareConcurrency: false,
         platform: false,
         timezone: false,
         historyLength: false,
@@ -70,6 +72,12 @@ const fpCollect = (function () {
         },
         doNotTrack: () => {
             return !!(navigator.doNotTrack || navigator.msDoNotTrack || window.doNotTrack);
+        },
+        cpuClass: () => {
+            return navigator.cpuClass;
+        },
+        hardwareConcurrency: () => {
+            return navigator.hardwareConcurrency || -1
         },
         plugins: () => {
             const pluginsRes = [];

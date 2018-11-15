@@ -298,6 +298,24 @@ describe('Fingerprinting on Chrome Headless', function () {
         expect(cookieEnabled).to.equal(true);
     });
 
+    it('hardwareConcurrency should be a number', async () => {
+        const hardwareConcurrency = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.hardwareConcurrency;
+        });
+
+        expect(typeof hardwareConcurrency).to.equal('number');
+    });
+
+    it('cpuClass should be undefined', async () => {
+        const cpuClass = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.cpuClass;
+        });
+
+        expect(typeof cpuClass).to.equal('undefined');
+    });
+
     it('computedStyleBody should be a string', async () => {
         const computedStyleBody = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();
