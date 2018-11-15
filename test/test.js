@@ -316,6 +316,33 @@ describe('Fingerprinting on Chrome Headless', function () {
         expect(typeof cpuClass).to.equal('undefined');
     });
 
+    it('byteLength should be equal to 1', async () => {
+        const byteLength = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.byteLength;
+        });
+
+        expect(byteLength).to.equal(1);
+    });
+
+    it('indexedDB should be true', async () => {
+        const indexedDB = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.indexedDB;
+        });
+
+        expect(indexedDB).to.equal(true);
+    });
+
+    it('openDatabase should be true', async () => {
+        const openDatabase = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.openDatabase;
+        });
+
+        expect(openDatabase).to.equal(true);
+    });
+
     it('computedStyleBody should be a string', async () => {
         const computedStyleBody = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();

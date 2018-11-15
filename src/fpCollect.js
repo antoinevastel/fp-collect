@@ -6,6 +6,7 @@ const fpCollect = (function () {
         plugins: false,
         mimeTypes: false,
         userAgent: false,
+        byteLength: false,
         appVersion: false,
         appName: false,
         appCodeName: false,
@@ -20,6 +21,8 @@ const fpCollect = (function () {
         computedStyleBody: false,
         languages: false,
         language: false,
+        indexedDB: false,
+        openDatabase: false,
         screen: false,
         touchScreen: false,
         videoCard: false,
@@ -54,6 +57,13 @@ const fpCollect = (function () {
     const defaultAttributeToFunction = {
         userAgent: () => {
             return navigator.userAgent;
+        },
+        byteLength: () => {
+            try {
+                return new window.SharedArrayBuffer(1).byteLength;
+            } catch (e) {
+                return UNKNOWN;
+            }
         },
         appVersion: () => {
             return navigator.appVersion;
@@ -133,6 +143,12 @@ const fpCollect = (function () {
                 return navigator.languages;
             }
             return UNKNOWN;
+        },
+        indexedDB: () => {
+            return !!window.indexedDB;
+        },
+        openDatabase: () => {
+            return !!window.openDatabase;
         },
         screen: () => {
             return {
