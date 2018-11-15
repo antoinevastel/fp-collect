@@ -153,6 +153,14 @@ describe('Fingerprinting on Chrome Headless', function () {
         expect(webDriver).to.be.true;
     });
 
+    it('domAutomation should be false', async () => {
+        const domAutomation = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.domAutomation;
+        });
+        expect(domAutomation).to.be.false;
+    });
+
     it('nightmareJS should be false', async () => {
         const nightmareJS = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();

@@ -29,6 +29,7 @@ const fpCollect = (function () {
         nightmareJS: false,
         selenium: false,
         webDriver: false,
+        domAutomation: false,
         errorsGenerated: false,
         resOverflow: false,
         accelerometerUsed: true,
@@ -269,6 +270,9 @@ const fpCollect = (function () {
         },
         webDriver: () => {
             return 'webdriver' in navigator;
+        },
+        domAutomation: () => {
+            return "domAutomation" in window || "domAutomationController" in window
         },
         errorsGenerated: () => {
             const errors = [];
