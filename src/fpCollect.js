@@ -77,7 +77,13 @@ const fpCollect = (function () {
     screen: () => {
       return {
         wInnerHeight: window.innerHeight,
-        wOuterHeight: window.outerHeight
+        wOuterHeight: window.outerHeight,
+        sWidth: screen.width,
+        sHeight: screen.height,
+        sAvailWidth: screen.availWidth,
+        sAvailHeight: screen.availHeight,
+        sColorDepth: screen.colorDepth,
+        sPixelDepth: screen.pixelDepth
       };
     },
     touchScreen: () => {

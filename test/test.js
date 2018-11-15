@@ -249,12 +249,12 @@ describe('Fingerprinting on Chrome Headless', function () {
     expect(touchScreen).to.deep.equal([0, false, false]);
   });
 
-  it('screen should have 9 properties', async () => {
+  it('screen should have 8 properties', async () => {
     const screen = await page.evaluate(async () => {
       const fingerprint = await fpCollect.generateFingerprint();
       return fingerprint.screen;
     });
-    const isScreenValid = screen !== undefined && Object.keys(screen).length === 2;
+    const isScreenValid = screen !== undefined && Object.keys(screen).length === 8;
     expect(isScreenValid).to.be.true;
   });
 
