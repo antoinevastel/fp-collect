@@ -153,6 +153,14 @@ describe('Fingerprinting on Chrome Headless', function () {
         expect(webDriver).to.be.true;
     });
 
+    it('fmget should be false', async () => {
+        const fmget = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.fmget;
+        });
+        expect(fmget).to.be.false;
+    });
+
     it('domAutomation should be false', async () => {
         const domAutomation = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();
@@ -272,6 +280,15 @@ describe('Fingerprinting on Chrome Headless', function () {
         expect(typeof timezone).to.equal("number");
     });
 
+    it('historyLength should be a number', async () => {
+        const historyLength = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.historyLength;
+        });
+
+        expect(typeof historyLength).to.equal("number");
+    });
+
     it('cookieEnabled should be true', async () => {
         const cookieEnabled = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();
@@ -279,6 +296,15 @@ describe('Fingerprinting on Chrome Headless', function () {
         });
 
         expect(cookieEnabled).to.equal(true);
+    });
+
+    it('computedStyleBody should be a string', async () => {
+        const computedStyleBody = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.computedStyleBody;
+        });
+
+        expect(typeof computedStyleBody).to.equal('string');
     });
 
     it('multimediaDevices should not be null', async () => {

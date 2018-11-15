@@ -14,6 +14,8 @@ const fpCollect = (function () {
         doNotTrack: false,
         platform: false,
         timezone: false,
+        historyLength: false,
+        computedStyleBody: false,
         languages: false,
         language: false,
         screen: false,
@@ -29,6 +31,7 @@ const fpCollect = (function () {
         nightmareJS: false,
         selenium: false,
         webDriver: false,
+        fmget: false,
         domAutomation: false,
         errorsGenerated: false,
         resOverflow: false,
@@ -98,6 +101,18 @@ const fpCollect = (function () {
         },
         timezone: () => {
             return new Date().getTimezoneOffset();
+        },
+        historyLength: () => {
+            if(typeof window.history !== "undefined" && typeof window.history.length !== "undefined")
+                return window.history.length;
+
+            return UNKNOWN
+        },
+        computedStyleBody: () => {
+            if (window && document && document.body) {
+                return Array.from(window.getComputedStyle(document.body)).join('');
+            }
+            return UNKNOWN;
         },
         language: () => {
             if (navigator.language) {
@@ -273,6 +288,9 @@ const fpCollect = (function () {
         },
         domAutomation: () => {
             return "domAutomation" in window || "domAutomationController" in window
+        },
+        fmget: () => {
+            return !!window.fmget_targets
         },
         errorsGenerated: () => {
             const errors = [];
