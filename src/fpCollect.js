@@ -41,6 +41,7 @@ const fpCollect = (function () {
         errorsGenerated: false,
         resOverflow: false,
         accelerometerUsed: true,
+        audio: true,
         screenMediaQuery: false,
         hasChrome: false,
         permissions: true,
@@ -121,7 +122,7 @@ const fpCollect = (function () {
             return new Date().getTimezoneOffset();
         },
         historyLength: () => {
-            if(typeof window.history !== "undefined" && typeof window.history.length !== "undefined")
+            if (typeof window.history !== "undefined" && typeof window.history.length !== "undefined")
                 return window.history.length;
 
             return UNKNOWN
@@ -378,6 +379,80 @@ const fpCollect = (function () {
                 setTimeout(() => {
                     return resolve(false);
                 }, 200);
+            });
+        },
+        audio: () => {
+            return new Promise((resolve) => {
+
+                const psignal = (a, b, c) => {
+                    for (let d in b) "dopplerFactor" === d || "speedOfSound" === d || "currentTime" ===
+                    d || "number" !== typeof b[d] && "string" !== typeof b[d] || (a[(c ? c : "") + d] = b[d]);
+                    return a
+                };
+
+                let nt_vc_output;
+                try {
+                    const context = window.AudioContext || window.webkitAudioContext;
+                    if (typeof context !== "function") return resolve(UNKNOWN);
+
+                    const f = new context,
+                        d = f.createAnalyser();
+
+                    nt_vc_output = psignal({}, f, "ac-");
+                    nt_vc_output = psignal(nt_vc_output, f.destination, "ac-");
+                    nt_vc_output = psignal(nt_vc_output, f.listener, "ac-");
+                    nt_vc_output = psignal(nt_vc_output, d, "an-");
+                } catch (g) {
+                    nt_vc_output = UNKNOWN;
+                }
+
+                try {
+                    const context = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100);
+
+                    if (!context) {
+                        return resolve({
+                            nt_vc_output: nt_vc_output,
+                            pxi_output: UNKNOWN
+                        });
+                    }
+
+                    const pxi_oscillator = context.createOscillator();
+                    pxi_oscillator.type = "triangle";
+                    pxi_oscillator.frequency.value = 1e4;
+
+                    const pxi_compressor = context.createDynamicsCompressor();
+                    pxi_compressor.threshold && (pxi_compressor.threshold.value = -50);
+                    pxi_compressor.knee && (pxi_compressor.knee.value = 40);
+                    pxi_compressor.ratio && (pxi_compressor.ratio.value = 12);
+                    pxi_compressor.reduction && (pxi_compressor.reduction.value = -20);
+                    pxi_compressor.attack && (pxi_compressor.attack.value = 0);
+                    pxi_compressor.release && (pxi_compressor.release.value = .25);
+
+                    pxi_oscillator.connect(pxi_compressor);
+                    pxi_compressor.connect(context.destination);
+
+                    pxi_oscillator.start(0);
+                    context.startRendering();
+                    context.oncomplete = (event) => {
+                        let pxi_output = 0;
+
+                        for (let i = 4500; 5e3 > i; i++) {
+                            pxi_output += Math.abs(event.renderedBuffer.getChannelData(0)[i]);
+                        }
+                        pxi_compressor.disconnect();
+
+                        return resolve({
+                            nt_vc_output: nt_vc_output,
+                            pxi_output: pxi_output
+                        });
+                    }
+                } catch (u) {
+                    return resolve({
+                        nt_vc_output: nt_vc_output,
+                        pxi_output: UNKNOWN
+                    });
+                }
+
             });
         },
         screenMediaQuery: () => {
