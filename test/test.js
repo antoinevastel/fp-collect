@@ -26,6 +26,24 @@ describe('Fingerprinting on Chrome Headless', function () {
         await browser.close();
     });
 
+    it('detailChrome should be unknown', async () => {
+        const detailChrome = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.detailChrome;
+        });
+
+        expect(detailChrome).to.equal('unknown');
+    });
+
+    it('gamut should not be undefined', async () => {
+        const gamut = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.gamut;
+        });
+
+        expect(typeof gamut).to.equal('object');
+    });
+
     it('Canvas should not be undefined', async () => {
         const canvas = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();

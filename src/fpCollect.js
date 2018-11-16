@@ -7,6 +7,7 @@ const fpCollect = (function () {
         mimeTypes: false,
         userAgent: false,
         byteLength: false,
+        gamut: false,
         appVersion: false,
         appName: false,
         appCodeName: false,
@@ -16,6 +17,7 @@ const fpCollect = (function () {
         cpuClass: false,
         hardwareConcurrency: false,
         platform: false,
+        oscpu: false,
         timezone: false,
         historyLength: false,
         computedStyleBody: false,
@@ -44,6 +46,7 @@ const fpCollect = (function () {
         audio: true,
         screenMediaQuery: false,
         hasChrome: false,
+        detailChrome: false,
         permissions: true,
         iframeChrome: false,
         debugTool: false,
@@ -65,6 +68,16 @@ const fpCollect = (function () {
                 return new window.SharedArrayBuffer(1).byteLength;
             } catch (e) {
                 return UNKNOWN;
+            }
+        },
+        gamut: () => {
+            try{
+                return ["srgb", "p3", "rec2020", "any"].map((prop) => {
+                    return window.matchMedia("( color-gamut" + ("any" !== prop ? ": " + prop : "") + " )").matches;
+
+                })
+            } catch(e) {
+                return [UNKNOWN];
             }
         },
         appVersion: () => {
@@ -116,6 +129,12 @@ const fpCollect = (function () {
         platform: () => {
             if (navigator.platform) {
                 return navigator.platform;
+            }
+            return UNKNOWN;
+        },
+        oscpu: () => {
+            if (navigator.oscpu) {
+                return navigator.oscpu;
             }
             return UNKNOWN;
         },
@@ -461,6 +480,32 @@ const fpCollect = (function () {
         },
         hasChrome: () => {
             return !!window.chrome;
+        },
+        detailChrome: () => {
+            if (!window.chrome) return UNKNOWN;
+
+            const res = {};
+
+            try{
+                ["webstore", "runtime", "app", "csi", "loadTimes"].forEach((property) => {
+                    res[property] = window.chrome[property].constructor.toString().length;
+                });
+            } catch (e) {
+                res.properties = UNKNOWN;
+            }
+
+            try {
+                window.chrome.runtime.connect('');
+            } catch (e) {
+                res.connect = e.message.length;
+            }
+            try {
+                window.chrome.runtime.sendMessage();
+            } catch (e) {
+                res.sendMessage = e.message.length;
+            }
+
+            return res;
         },
         permissions: () => {
             return new Promise((resolve) => {
