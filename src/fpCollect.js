@@ -647,12 +647,18 @@ const fpCollect = (function () {
                     ogg: videoElt.canPlayType('video/ogg; codecs="theora"'),
                     h264: videoElt.canPlayType('video/mp4; codecs="avc1.42E01E"'),
                     webm: videoElt.canPlayType('video/webm; codecs="vp8, vorbis"'),
+                    mpeg4v: videoElt.canPlayType('video/mp4; codecs="mp4v.20.8, mp4a.40.2"'),
+                    mpeg4a: videoElt.canPlayType('video/mp4; codecs="mp4v.20.240, mp4a.40.2"'),
+                    theora: videoElt.canPlayType('video/x-matroska; codecs="theora, vorbis"')
                 }
             }
             return {
                 ogg: UNKNOWN,
                 h264: UNKNOWN,
                 webm: UNKNOWN,
+                mpeg4v: UNKNOWN,
+                mpeg4a: UNKNOWN,
+                theora: UNKNOWN
             }
         }
     };

@@ -71,7 +71,10 @@ describe('Fingerprinting on Chrome Headless', function () {
         expect(videoCodecs).to.deep.equal({
             ogg: 'probably',
             h264: '',
-            webm: 'probably'
+            webm: 'probably',
+            mpeg4v: '',
+            mpeg4a: '',
+            theora: ''
         });
     });
 
