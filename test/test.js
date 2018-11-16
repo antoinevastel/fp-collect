@@ -26,6 +26,15 @@ describe('Fingerprinting on Chrome Headless', function () {
         await browser.close();
     });
 
+    it('Canvas should not be undefined', async () => {
+        const canvas = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.canvas;
+        });
+
+        expect(typeof canvas).to.equal('object');
+    });
+
     it('audio should not be undefined', async () => {
         const audio = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();
