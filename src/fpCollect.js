@@ -38,6 +38,7 @@ const fpCollect = (function () {
         nightmareJS: false,
         selenium: false,
         webDriver: false,
+        webDriverValue: false,
         fmget: false,
         domAutomation: false,
         errorsGenerated: false,
@@ -330,6 +331,9 @@ const fpCollect = (function () {
         },
         webDriver: () => {
             return 'webdriver' in navigator;
+        },
+        webDriverValue: () => {
+            return navigator.webdriver;
         },
         domAutomation: () => {
             return "domAutomation" in window || "domAutomationController" in window
