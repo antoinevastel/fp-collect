@@ -26,6 +26,49 @@ describe('Fingerprinting on Chrome Headless', function () {
         await browser.close();
     });
 
+    it('An exception in a synchronous function should not make the fingerprint crash', async () => {
+        const userAgent = await page.evaluate(async () => {
+            fpCollect.addCustomFunction('shouldCrash', false, () => {
+               throw 'exception';
+            });
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.userAgent;
+        });
+        expect(typeof userAgent).to.equal('string');
+    });
+
+    it('Exceptions in synchronous functions are caught', async () => {
+        const shouldCrash = await page.evaluate(async () => {
+            fpCollect.addCustomFunction('shouldCrash', false, () => {
+               throw 'exception';
+            });
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.shouldCrash;
+        });
+
+        expect(shouldCrash).to.deep.equal({
+            error: true,
+            message: 'exception'
+        });
+    });
+
+    it('Exceptions in asynchronous functions are caught', async () => {
+        const shouldCrash = await page.evaluate(async () => {
+            fpCollect.addCustomFunction('shouldCrash', true, () => {
+                return new Promise(() => {
+                    throw 'exception';
+                });
+            });
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.shouldCrash;
+        });
+
+        expect(shouldCrash).to.deep.equal({
+            error: true,
+            message: 'exception'
+        });
+    });
+
     it('detailChrome should be unknown', async () => {
         const detailChrome = await page.evaluate(async () => {
             const fingerprint = await fpCollect.generateFingerprint();

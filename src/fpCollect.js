@@ -2,7 +2,7 @@ const fpCollect = (function () {
     const UNKNOWN = 'unknown';
     const ERROR = 'error';
 
-    const DEFAULT_ATTRIBUTES_ASYNC = {
+    let DEFAULT_ATTRIBUTES = {
         plugins: false,
         mimeTypes: false,
         userAgent: false,
@@ -663,26 +663,39 @@ const fpCollect = (function () {
         }
     };
 
-    const addCustomFunction = function (category, name, options, f) {
-        DEFAULT_OPTIONS[category][name] = options;
-        defaultAttributeToFunction[category][name] = f;
+    const addCustomFunction = function (name, isAsync, f) {
+        DEFAULT_ATTRIBUTES[name] = isAsync;
+        defaultAttributeToFunction[name] = f;
     };
 
     const generateFingerprint = function () {
         return new Promise((resolve) => {
             const promises = [];
             const fingerprint = {};
-            Object.keys(DEFAULT_ATTRIBUTES_ASYNC).forEach((attribute) => {
+            Object.keys(DEFAULT_ATTRIBUTES).forEach((attribute) => {
                 fingerprint[attribute] = {};
-                if (DEFAULT_ATTRIBUTES_ASYNC[attribute]) {
+                if (DEFAULT_ATTRIBUTES[attribute]) {
                     promises.push(new Promise((resolve) => {
                         defaultAttributeToFunction[attribute]().then((val) => {
                             fingerprint[attribute] = val;
                             return resolve();
-                        });
+                        }).catch((e) => {
+                            fingerprint[attribute] = {
+                                error: true,
+                                message: e.toString()
+                            };
+                            return resolve();
+                        })
                     }));
                 } else {
-                    fingerprint[attribute] = defaultAttributeToFunction[attribute]();
+                    try{
+                        fingerprint[attribute] = defaultAttributeToFunction[attribute]();
+                    } catch (e) {
+                        fingerprint[attribute] = {
+                            error: true,
+                            message: e.toString()
+                        };
+                    }
                 }
             });
             return Promise.all(promises).then(() => {
