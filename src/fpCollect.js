@@ -8,6 +8,8 @@ const fpCollect = (function () {
         userAgent: false,
         byteLength: false,
         gamut: false,
+        anyPointer: false,
+        anyHover: false,
         appVersion: false,
         appName: false,
         appCodeName: false,
@@ -80,6 +82,26 @@ const fpCollect = (function () {
             } catch(e) {
                 return [UNKNOWN];
             }
+        },
+        anyPointer: () => {
+            const properties = ["fine", "coarse", "none", "any"];
+            for (let i = 0; i < properties.length; i++) {
+                let property = properties[i];
+                if (window.matchMedia("( any-pointer" + ("any" !== property ? ": " + property : "") + " )").matches) {
+                    return property;
+                }
+            }
+            return UNKNOWN;
+        },
+        anyHover: () => {
+            const properties = ["hover", "on-demand", "none", "any"];
+            for (let i = 0; i < properties.length; i++) {
+                let property = properties[i];
+                if (window.matchMedia("( any-hover" + ("any" !== property ? ": " + property: "") + " )").matches) {
+                    return property;
+                }
+            }
+            return UNKNOWN;
         },
         appVersion: () => {
             return navigator.appVersion;
@@ -402,7 +424,7 @@ const fpCollect = (function () {
 
                 setTimeout(() => {
                     return resolve(false);
-                }, 200);
+                }, 300);
             });
         },
         audio: () => {

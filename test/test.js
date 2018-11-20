@@ -26,6 +26,24 @@ describe('Fingerprinting on Chrome Headless', function () {
         await browser.close();
     });
 
+    it('anyPointer should be equal to fine', async () => {
+        const anyPointer = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.anyPointer;
+        });
+
+        expect(anyPointer).to.equal('fine');
+    });
+
+    it('anyHover should be equal to hover', async () => {
+        const anyHover = await page.evaluate(async () => {
+            const fingerprint = await fpCollect.generateFingerprint();
+            return fingerprint.anyHover;
+        });
+
+        expect(anyHover).to.equal('hover');
+    });
+
     it('An exception in a synchronous function should not make the fingerprint crash', async () => {
         const userAgent = await page.evaluate(async () => {
             fpCollect.addCustomFunction('shouldCrash', false, () => {
