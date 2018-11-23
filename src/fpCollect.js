@@ -198,6 +198,13 @@ const fpCollect = (function () {
             return {
                 wInnerHeight: window.innerHeight,
                 wOuterHeight: window.outerHeight,
+                wOuterWidth: window.outerWidth,
+                wInnerWidth: window.innerWidth,
+                wScreenX: window.screenX,
+                wPageXOffset: window.pageXOffset,
+                wPageYOffset: window.pageYOffset,
+                cWidth: document.body.clientWidth,
+                cHeight: document.body.clientHeight,
                 sWidth: screen.width,
                 sHeight: screen.height,
                 sAvailWidth: screen.availWidth,
