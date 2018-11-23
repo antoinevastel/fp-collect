@@ -308,7 +308,7 @@ const fpCollect = (function () {
             });
         },
         screenMediaQuery: () => {
-            return window.matchMedia('(min-width: ' + (screen.availWidth - 1) + 'px)').matches;
+            return window.matchMedia('(min-width: ' + (window.innerWidth - 1) + 'px)').matches;
         },
         hasChrome: () => {
             return !!window.chrome;
