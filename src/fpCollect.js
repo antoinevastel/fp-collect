@@ -142,6 +142,7 @@ const fpCollect = (function () {
                     && navigator.mediaDevices.enumerateDevices.name !== "bound reportBlock") {
                     // bound reportBlock occurs with Brave
                     navigator.mediaDevices.enumerateDevices().then((devices) => {
+                        if (typeof devices !== "undefined") {
                         let name;
                         for (let i = 0; i < devices.length; i++) {
                             name = [devices[i].kind];
@@ -152,6 +153,14 @@ const fpCollect = (function () {
                             micros: deviceToCount.audioinput,
                             webcams: deviceToCount.videoinput
                         });
+                        } else {
+                            resolve({
+                                speakers: 0,
+                                micros: 0,
+                                webcams: 0
+                            });
+                        }
+
                     });
                 } else if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices
                     && navigator.mediaDevices.enumerateDevices.name === "bound reportBlock") {
