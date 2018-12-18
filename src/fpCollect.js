@@ -260,16 +260,25 @@ const fpCollect = (function () {
                     && navigator.mediaDevices.enumerateDevices.name !== "bound reportBlock") {
                     // bound reportBlock occurs with Brave
                     navigator.mediaDevices.enumerateDevices().then((devices) => {
-                        let name;
-                        for (let i = 0; i < devices.length; i++) {
-                            name = [devices[i].kind];
-                            deviceToCount[name] = deviceToCount[name] + 1;
+                        if (typeof devices !== "undefined") {
+                            let name;
+                            for (let i = 0; i < devices.length; i++) {
+                                name = [devices[i].kind];
+                                deviceToCount[name] = deviceToCount[name] + 1;
+                            }
+                            resolve({
+                                speakers: deviceToCount.audiooutput,
+                                micros: deviceToCount.audioinput,
+                                webcams: deviceToCount.videoinput
+                            });
+                        } else {
+                            resolve({
+                                speakers: 0,
+                                micros: 0,
+                                webcams: 0
+                            });
                         }
-                        resolve({
-                            speakers: deviceToCount.audiooutput,
-                            micros: deviceToCount.audioinput,
-                            webcams: deviceToCount.videoinput
-                        });
+
                     });
                 } else if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices
                     && navigator.mediaDevices.enumerateDevices.name === "bound reportBlock") {
@@ -509,7 +518,7 @@ const fpCollect = (function () {
             });
         },
         screenMediaQuery: () => {
-            return window.matchMedia('(min-width: ' + (screen.availWidth - 1) + 'px)').matches;
+            return window.matchMedia('(min-width: ' + (window.innerWidth - 1) + 'px)').matches;
         },
         hasChrome: () => {
             return !!window.chrome;
