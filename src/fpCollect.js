@@ -59,7 +59,9 @@ const fpCollect = (function () {
         canvas: false,
         sequentum: false,
         audioCodecs: false,
-        videoCodecs: false
+        videoCodecs: false,
+        redPill: false,
+        redPill2: false
     };
 
     const defaultAttributeToFunction = {
@@ -702,8 +704,47 @@ const fpCollect = (function () {
                 mpeg4a: UNKNOWN,
                 theora: UNKNOWN
             }
+        },
+        redPill: () => {
+            let start = performance.now();
+            let b = 0;
+            let c = 0;
+            let arr = [];
+
+            for (let cpt = performance.now(); cpt - start < 50; cpt = performance.now()) {
+                arr.push(Math.floor(Math.random()* 1000000));
+                arr.pop();
+                b++;
+            }
+
+            start = performance.now();
+            for (let cpt = performance.now(); cpt - start < 50; cpt = performance.now()) {
+                localStorage.setItem("0", "constant string");
+                localStorage.removeItem("0");
+                c++;
+            }
+
+            return Math.round(c/b) * 1000;
+        },
+        redPill2: () => {
+            function b(c, e) {
+                if (c < 1E-8) {
+                    return e;
+                } else if (c < e) {
+                    return b(e - Math["floor"](e / c) * c, c)
+                } else if (c == e) {
+                    return c;
+                }
+                return b(e, c);
+            }
+
+
+            for (var c = performance["now"]() / 1000, e = performance["now"]() / 1000 - c, d = 0; d < 10; d++) {
+                e = b(e, performance["now"]() / 1E3 - c);
+            }
+            return Math.round(1 / e);
         }
-    };
+};
 
     const addCustomFunction = function (name, isAsync, f) {
         DEFAULT_ATTRIBUTES[name] = isAsync;
