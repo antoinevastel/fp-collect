@@ -353,7 +353,7 @@ const fpCollect = (function () {
                 navigator.permissions.query({name: 'notifications'}).then((val) => {
                     resolve({
                         state: val.state,
-                        permission: Notification.permission
+                        permission: typeof Notification === 'function' ? Notification.permission :  'denied'
                     })
                 });
             })
